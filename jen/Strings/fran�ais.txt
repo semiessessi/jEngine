@@ -1,0 +1,5 @@
+Unrecognised command: %1=Commande non reconnue: %1
+%1 is currently set to %2 (default: %3)=%1 est actuellement placé à %2 (défaut: %3)
+%1 has been set to %2 (default: %3)=%1 a été placé à %2 (défaut: %3)
+True=Vrai
+False=Faux

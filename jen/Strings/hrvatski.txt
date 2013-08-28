@@ -1,0 +1,3 @@
+Unrecognised command: %1=Nepoznata naredba: %1
+%1 is currently set to %2 (default: %3)=%1 je trenutno postavljen(a) na %2 (défaut: %3)
+%1 has been set to %2 (default: %3)=%1 je postavljen(a) na %2 (défaut: %3)

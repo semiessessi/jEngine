@@ -1,0 +1,91 @@
+%option noyywrap
+/* scanner */
+%{
+
+#include "parse.hpp"
+#include "Scanner.h"
+
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
+#include <sstream>
+#include <string>
+
+std::istringstream* ptr = 0;
+
+class eppLexer : public yyFlexLexer
+{
+public:
+    int scan_string(char* s, int len)
+    {
+        std::string str = s;
+        if(ptr) delete ptr;
+        ptr = new std::istringstream(str, std::istringstream::in);
+        yyin = ptr;
+        return 0;
+    }
+};
+
+eppLexer p = eppLexer();
+
+#pragma warning(disable : 4244)
+#pragma warning(disable : 4273)
+
+%}
+
+%%
+
+"//"[^\n]*                                              /* ignore one line comments */
+texture                                                 return TEXTURE;
+baked                                                   return BAKED;
+diffuse                                                 return DIFFUSE;
+map                                                     return MAP;
+checkerboard                                            return CHECKERBOARD;
+plain                                                   return PLAIN;
+png                                                     return PNG;
+"\"".*"\""                                              yylval.s = (char*)malloc(sizeof(char)*(strlen(yytext)+1)); yylval.s = strcpy(yylval.s, yytext); return CSTRING;
+[_a-zA-Z][_a-zA-Z0-9\/]+                                yylval.s = (char*)malloc(sizeof(char)*(strlen(yytext)+1)); yylval.s = strcpy(yylval.s, yytext); return IDENTIFIER;
+[0-9]+                                                  yylval.i = atoi(yytext); return CINT;
+"\-"[0-9]+                                              yylval.i = atoi(yytext); return CINT;
+[0-9]+"."[0-9]+                                         yylval.d = atof(yytext); return CFLOAT;
+"."[0-9]+                                               yylval.d = atof(yytext); return CFLOAT;
+"-"[0-9]+"."[0-9]+                                      yylval.d = atof(yytext); return CFLOAT;
+"-."[0-9]+                                              yylval.d = atof(yytext); return CFLOAT;
+"\+"                                                    return ADD;
+"\-"                                                    return SUB;
+"\*"                                                    return MUL;
+"\/"                                                    return DIV;
+"\^"                                                    return POW;
+"\("                                                    return LB;
+"\)"                                                    return RB;
+"\{"                                                    return LS;
+"\}"                                                    return RS;
+"\="                                                    return ASSIGN;
+"\;"                                                    return SEMICOLON;
+\n                                                      /* do something here */
+[ \t\r]+                                                /* ignore these */
+
+%%
+
+int yylex()
+{
+    return p.yylex();
+}
+
+int yy_scan_string(char* s)
+{
+    return p.scan_string(s, (int)strlen(s));
+}
+
+void yy_free_ptr()
+{
+    if(ptr)
+    {
+        delete ptr;
+        ptr = 0;
+    }
+}
+
+#pragma warning(default : 4244)
+#pragma warning(default : 4273)

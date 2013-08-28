@@ -1,0 +1,439 @@
+Terminals which are not used
+
+   ADD
+   SUB
+   MUL
+   DIV
+   POW
+   ASSIGN
+   LB
+   RB
+   SEMICOLON
+   DIFFUSE
+   NORMAL
+   SPECULAR
+   OCCLUSION
+   TCMOD
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: /* empty */
+    2        | textures
+
+    3 textures: texture
+    4         | textures texture
+
+    5 texture: TEXTURE IDENTIFIER LS expressions RS
+
+    6 expressions: expression
+    7            | expressions expression
+
+    8 expression: BAKED LS expressions RS
+    9           | MAP PLAIN CINT CINT constant constant constant constant
+   10           | MAP CHECKERBOARD CINT CINT constant constant constant constant constant constant constant constant
+   11           | MAP PNG CSTRING
+
+   12 constant: CINT
+   13         | CFLOAT
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+CINT (258) 9 10 12
+CFLOAT (259) 13
+CSTRING (260) 11
+IDENTIFIER (261) 5
+ADD (262)
+SUB (263)
+MUL (264)
+DIV (265)
+POW (266)
+ASSIGN (267)
+LB (268)
+RB (269)
+LS (270) 5 8
+RS (271) 5 8
+SEMICOLON (272)
+TEXTURE (273) 5
+BAKED (274) 8
+DIFFUSE (275)
+NORMAL (276)
+SPECULAR (277)
+OCCLUSION (278)
+MAP (279) 9 10 11
+TCMOD (280)
+CHECKERBOARD (281) 10
+PLAIN (282) 9
+PNG (283) 11
+
+
+Nonterminals, with rules where they appear
+
+$accept (29)
+    on left: 0
+program (30)
+    on left: 1 2, on right: 0
+textures (31)
+    on left: 3 4, on right: 2 4
+texture (32)
+    on left: 5, on right: 3 4
+expressions (33)
+    on left: 6 7, on right: 5 7 8
+expression (34)
+    on left: 8 9 10 11, on right: 6 7
+constant (35)
+    on left: 12 13, on right: 9 10
+
+
+state 0
+
+    0 $accept: . program $end
+
+    TEXTURE  shift, and go to state 1
+
+    $default  reduce using rule 1 (program)
+
+    program   go to state 2
+    textures  go to state 3
+    texture   go to state 4
+
+
+state 1
+
+    5 texture: TEXTURE . IDENTIFIER LS expressions RS
+
+    IDENTIFIER  shift, and go to state 5
+
+
+state 2
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 6
+
+
+state 3
+
+    2 program: textures .
+    4 textures: textures . texture
+
+    TEXTURE  shift, and go to state 1
+
+    $default  reduce using rule 2 (program)
+
+    texture  go to state 7
+
+
+state 4
+
+    3 textures: texture .
+
+    $default  reduce using rule 3 (textures)
+
+
+state 5
+
+    5 texture: TEXTURE IDENTIFIER . LS expressions RS
+
+    LS  shift, and go to state 8
+
+
+state 6
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+state 7
+
+    4 textures: textures texture .
+
+    $default  reduce using rule 4 (textures)
+
+
+state 8
+
+    5 texture: TEXTURE IDENTIFIER LS . expressions RS
+
+    BAKED  shift, and go to state 9
+    MAP    shift, and go to state 10
+
+    expressions  go to state 11
+    expression   go to state 12
+
+
+state 9
+
+    8 expression: BAKED . LS expressions RS
+
+    LS  shift, and go to state 13
+
+
+state 10
+
+    9 expression: MAP . PLAIN CINT CINT constant constant constant constant
+   10           | MAP . CHECKERBOARD CINT CINT constant constant constant constant constant constant constant constant
+   11           | MAP . PNG CSTRING
+
+    CHECKERBOARD  shift, and go to state 14
+    PLAIN         shift, and go to state 15
+    PNG           shift, and go to state 16
+
+
+state 11
+
+    5 texture: TEXTURE IDENTIFIER LS expressions . RS
+    7 expressions: expressions . expression
+
+    RS     shift, and go to state 17
+    BAKED  shift, and go to state 9
+    MAP    shift, and go to state 10
+
+    expression  go to state 18
+
+
+state 12
+
+    6 expressions: expression .
+
+    $default  reduce using rule 6 (expressions)
+
+
+state 13
+
+    8 expression: BAKED LS . expressions RS
+
+    BAKED  shift, and go to state 9
+    MAP    shift, and go to state 10
+
+    expressions  go to state 19
+    expression   go to state 12
+
+
+state 14
+
+   10 expression: MAP CHECKERBOARD . CINT CINT constant constant constant constant constant constant constant constant
+
+    CINT  shift, and go to state 20
+
+
+state 15
+
+    9 expression: MAP PLAIN . CINT CINT constant constant constant constant
+
+    CINT  shift, and go to state 21
+
+
+state 16
+
+   11 expression: MAP PNG . CSTRING
+
+    CSTRING  shift, and go to state 22
+
+
+state 17
+
+    5 texture: TEXTURE IDENTIFIER LS expressions RS .
+
+    $default  reduce using rule 5 (texture)
+
+
+state 18
+
+    7 expressions: expressions expression .
+
+    $default  reduce using rule 7 (expressions)
+
+
+state 19
+
+    7 expressions: expressions . expression
+    8 expression: BAKED LS expressions . RS
+
+    RS     shift, and go to state 23
+    BAKED  shift, and go to state 9
+    MAP    shift, and go to state 10
+
+    expression  go to state 18
+
+
+state 20
+
+   10 expression: MAP CHECKERBOARD CINT . CINT constant constant constant constant constant constant constant constant
+
+    CINT  shift, and go to state 24
+
+
+state 21
+
+    9 expression: MAP PLAIN CINT . CINT constant constant constant constant
+
+    CINT  shift, and go to state 25
+
+
+state 22
+
+   11 expression: MAP PNG CSTRING .
+
+    $default  reduce using rule 11 (expression)
+
+
+state 23
+
+    8 expression: BAKED LS expressions RS .
+
+    $default  reduce using rule 8 (expression)
+
+
+state 24
+
+   10 expression: MAP CHECKERBOARD CINT CINT . constant constant constant constant constant constant constant constant
+
+    CINT    shift, and go to state 26
+    CFLOAT  shift, and go to state 27
+
+    constant  go to state 28
+
+
+state 25
+
+    9 expression: MAP PLAIN CINT CINT . constant constant constant constant
+
+    CINT    shift, and go to state 26
+    CFLOAT  shift, and go to state 27
+
+    constant  go to state 29
+
+
+state 26
+
+   12 constant: CINT .
+
+    $default  reduce using rule 12 (constant)
+
+
+state 27
+
+   13 constant: CFLOAT .
+
+    $default  reduce using rule 13 (constant)
+
+
+state 28
+
+   10 expression: MAP CHECKERBOARD CINT CINT constant . constant constant constant constant constant constant constant
+
+    CINT    shift, and go to state 26
+    CFLOAT  shift, and go to state 27
+
+    constant  go to state 30
+
+
+state 29
+
+    9 expression: MAP PLAIN CINT CINT constant . constant constant constant
+
+    CINT    shift, and go to state 26
+    CFLOAT  shift, and go to state 27
+
+    constant  go to state 31
+
+
+state 30
+
+   10 expression: MAP CHECKERBOARD CINT CINT constant constant . constant constant constant constant constant constant
+
+    CINT    shift, and go to state 26
+    CFLOAT  shift, and go to state 27
+
+    constant  go to state 32
+
+
+state 31
+
+    9 expression: MAP PLAIN CINT CINT constant constant . constant constant
+
+    CINT    shift, and go to state 26
+    CFLOAT  shift, and go to state 27
+
+    constant  go to state 33
+
+
+state 32
+
+   10 expression: MAP CHECKERBOARD CINT CINT constant constant constant . constant constant constant constant constant
+
+    CINT    shift, and go to state 26
+    CFLOAT  shift, and go to state 27
+
+    constant  go to state 34
+
+
+state 33
+
+    9 expression: MAP PLAIN CINT CINT constant constant constant . constant
+
+    CINT    shift, and go to state 26
+    CFLOAT  shift, and go to state 27
+
+    constant  go to state 35
+
+
+state 34
+
+   10 expression: MAP CHECKERBOARD CINT CINT constant constant constant constant . constant constant constant constant
+
+    CINT    shift, and go to state 26
+    CFLOAT  shift, and go to state 27
+
+    constant  go to state 36
+
+
+state 35
+
+    9 expression: MAP PLAIN CINT CINT constant constant constant constant .
+
+    $default  reduce using rule 9 (expression)
+
+
+state 36
+
+   10 expression: MAP CHECKERBOARD CINT CINT constant constant constant constant constant . constant constant constant
+
+    CINT    shift, and go to state 26
+    CFLOAT  shift, and go to state 27
+
+    constant  go to state 37
+
+
+state 37
+
+   10 expression: MAP CHECKERBOARD CINT CINT constant constant constant constant constant constant . constant constant
+
+    CINT    shift, and go to state 26
+    CFLOAT  shift, and go to state 27
+
+    constant  go to state 38
+
+
+state 38
+
+   10 expression: MAP CHECKERBOARD CINT CINT constant constant constant constant constant constant constant . constant
+
+    CINT    shift, and go to state 26
+    CFLOAT  shift, and go to state 27
+
+    constant  go to state 39
+
+
+state 39
+
+   10 expression: MAP CHECKERBOARD CINT CINT constant constant constant constant constant constant constant constant .
+
+    $default  reduce using rule 10 (expression)

@@ -1,0 +1,7 @@
+Unrecognised command: %1=Unrecognized command: %1
+%1 is currently set to %2 (default: %3)=%1 is currently set to %2 (default: %3)
+%1 has been set to %2 (default: %3)=%1 has been set to %2 (default: %3)
+True=True
+False=False
+%1 menu file(s) succesfully loaded, %2 menu(s) found and %3 cached=%1 menu file(s) succesfully loaded, %2 menu(s) found and %3 cached
+Error(s) found in .menu file: %1=Error(s) found in .menu file: %1
